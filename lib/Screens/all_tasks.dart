@@ -6,6 +6,7 @@ class AllTasks extends StatefulWidget {
   const AllTasks({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AllTasksState createState() => _AllTasksState();
 }
 
@@ -13,7 +14,6 @@ class _AllTasksState extends State<AllTasks> {
   List<String> importantTasks = [];
   List<String> plannedTasks = [];
   List<String> assignedTasks = [];
-  List<String> deletedTasks = [];
 
   @override
   void initState() {
@@ -24,10 +24,9 @@ class _AllTasksState extends State<AllTasks> {
   Future<void> loadTasks() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
-      importantTasks = sp.getStringList('Important') ?? [];
-      plannedTasks = sp.getStringList('Planned') ?? [];
-      assignedTasks = sp.getStringList('AssignedToMe') ?? [];
-      deletedTasks = sp.getStringList('Deleted') ?? [];
+      importantTasks = sp.getStringList('important') ?? [];
+      plannedTasks = sp.getStringList('planned') ?? [];
+      assignedTasks = sp.getStringList('assigned') ?? [];
     });
   }
 
@@ -37,7 +36,6 @@ class _AllTasksState extends State<AllTasks> {
       ...importantTasks,
       ...plannedTasks,
       ...assignedTasks,
-      ...deletedTasks,
     ];
 
     return Scaffold(
