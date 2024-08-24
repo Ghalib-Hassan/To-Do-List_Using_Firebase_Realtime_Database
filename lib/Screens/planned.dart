@@ -67,7 +67,9 @@ class _PlannedScreenState extends State<PlannedScreen> {
                     },
                     activeColor: Colors.blue,
                     controlAffinity: ListTileControlAffinity.leading,
-                    tileColor: Colors.blueGrey.withOpacity(.5),
+                    tileColor: checkedList.contains(true)
+                        ? Colors.amber.withOpacity(.5)
+                        : Colors.blueGrey.withOpacity(.5),
                     secondary: IconButton(
                       icon: const Icon(Icons.edit, color: Colors.blue),
                       onPressed: () {
@@ -144,30 +146,31 @@ class _PlannedScreenState extends State<PlannedScreen> {
               ),
             ),
           ),
-          Positioned(
-            bottom: 16.0,
-            right: 16.0,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 2, color: Colors.red),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: IconButton(
-                tooltip: 'Delete',
-                icon: const Icon(Icons.delete, size: 50, color: Colors.red),
-                onPressed: () {
-                  setState(() {
-                    for (int i = checkedList.length - 1; i >= 0; i--) {
-                      if (checkedList[i]) {
-                        plannedList.removeAt(i);
+          if (checkedTasks.contains(true))
+            Positioned(
+              bottom: 16.0,
+              right: 16.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2, color: Colors.red),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: IconButton(
+                  tooltip: 'Delete',
+                  icon: const Icon(Icons.delete, size: 50, color: Colors.red),
+                  onPressed: () {
+                    setState(() {
+                      for (int i = checkedList.length - 1; i >= 0; i--) {
+                        if (checkedList[i]) {
+                          plannedList.removeAt(i);
+                        }
                       }
-                    }
-                    _saveData();
-                  });
-                },
+                      _saveData();
+                    });
+                  },
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
