@@ -2,7 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_smit/Custom%20Widgets/button.dart';
 import 'package:to_do_list_smit/Custom%20Widgets/toast.dart';
 import 'package:to_do_list_smit/Utils/colors.dart';
@@ -17,6 +16,7 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   TextEditingController addController = TextEditingController();
   String textfield = '';
+  DatabaseReference db = FirebaseDatabase.instance.ref('Todo');
   bool isLoading = false;
 
   @override
@@ -124,26 +124,36 @@ class _TodoListState extends State<TodoList> {
                       textColor: white,
                       isLoading: isLoading,
                       onPressed: () {
-                        DatabaseReference db =
-                            FirebaseDatabase.instance.ref('Todo');
-                        String id =
-                            DateTime.now().millisecondsSinceEpoch.toString();
-
-                        db.child(id).set({
-                          'id': id,
-                          'name': 'Ghalib hassan',
-                          'Todo': addController.text.toString().trim()
-                        }).then((value) {
-                          addController.clear();
+                        if (addController.text.trim().isEmpty) {
+                          ToastPopUp().toast('Textfield should not be empty',
+                              Colors.red, Colors.white);
+                        } else {
                           setState(() {
-                            isLoading = false;
+                            isLoading = true;
                           });
-                          ToastPopUp()
-                              .toast('Data saved', Colors.green, Colors.white);
-                        }).onError((error, v) {
-                          ToastPopUp()
-                              .toast('Failed to add', Colors.red, Colors.white);
-                        });
+                          // String name = 'Ghalib';
+                          String id =
+                              DateTime.now().millisecondsSinceEpoch.toString();
+
+                          db.child(id).set({
+                            'id': id,
+                            'name': 'Ghalib hassan',
+                            'Todo': addController.text.toString().trim()
+                          }).then((value) {
+                            addController.clear();
+                            setState(() {
+                              isLoading = false;
+                            });
+                            ToastPopUp().toast(
+                                'Data Added', Colors.green, Colors.white);
+                          }).onError((error, v) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            ToastPopUp().toast(
+                                'Failed to Add Data', Colors.red, Colors.white);
+                          });
+                        }
                       },
                     ),
                   ),

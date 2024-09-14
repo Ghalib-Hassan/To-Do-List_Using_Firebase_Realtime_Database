@@ -19,3 +19,19 @@ const darkblue = Color(0xFF023982);
 const blue = Color.fromARGB(255, 19, 61, 210);
 const white = Colors.white;
 const black = Colors.black;
+
+List colors = [
+  Colors.red,
+  Colors.green,
+  Colors.blue,
+  Colors.amber,
+  Colors.pink,
+  Colors.brown,
+  Colors.cyan,
+  Colors.black,
+  Colors.orange,
+  Colors.redAccent,
+  Colors.blueGrey,
+  Colors.greenAccent,
+  Colors.amberAccent,
+];

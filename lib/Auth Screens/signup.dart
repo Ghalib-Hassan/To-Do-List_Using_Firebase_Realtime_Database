@@ -24,10 +24,10 @@ class _SignupState extends State<Signup> {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   String fullname = '', firstname = '', lastname = '';
-
   FirebaseAuth auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +39,7 @@ class _SignupState extends State<Signup> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Text(
@@ -54,19 +54,31 @@ class _SignupState extends State<Signup> {
                       fontWeight: FontWeight.w400,
                       fontSize: 15),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SimpleAuthTextField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your first name';
+                      }
+                      return null;
+                    },
                     myController: firstName,
                     keyboardType: TextInputType.name,
                     labelText: 'First Name'),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 SimpleAuthTextField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your last name, if not type "-"';
+                      }
+                      return null;
+                    },
                     myController: lastName,
                     keyboardType: TextInputType.name,
                     labelText: 'Last Name '),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 SimpleAuthTextField(
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -77,14 +89,14 @@ class _SignupState extends State<Signup> {
                     keyboardType: TextInputType.emailAddress,
                     myController: emailController,
                     labelText: 'Email'),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 SimpleAuthTextField(
                     keyboardType: TextInputType.phone,
                     labelText: 'Mobile Number'),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 SimpleAuthTextField(
                     keyboardType: TextInputType.text, labelText: 'Gender'),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 PasswordTextField(
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -95,7 +107,7 @@ class _SignupState extends State<Signup> {
                     keyboardType: TextInputType.visiblePassword,
                     myController: passwordController,
                     labelText: 'Password'),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 PasswordTextField(
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -106,7 +118,7 @@ class _SignupState extends State<Signup> {
                     keyboardType: TextInputType.visiblePassword,
                     myController: confirmController,
                     labelText: 'Confirm Password'),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 CustomButton(
                     buttonWidth: 400,
                     buttonHeight: 50,
@@ -164,23 +176,32 @@ class _SignupState extends State<Signup> {
 
                               // firstname = firstName.text.trim();
                               // lastname = lastName.text.trim();
-                              // fullname = firstname + lastname;
-                              // DatabaseReference db =
-                              //     FirebaseDatabase.instance.ref('Todo');
-                              // String id = DateTime.now()
-                              //     .millisecondsSinceEpoch
-                              //     .toString();
-                              // db.child(id).set({
-                              //   'id': id,
-                              //   'name': fullname,
-                              // }).then((value) {
-                              //   setState(() {
-                              //     isLoading = false;
+                              // fullname = '$firstname $lastname';
+
+                              // if (firstname.isNotEmpty && lastname.isNotEmpty) {
+                              //   DatabaseReference db =
+                              //       FirebaseDatabase.instance.ref('Todo');
+                              //   String id = DateTime.now()
+                              //       .millisecondsSinceEpoch
+                              //       .toString();
+
+                              //   db.child(id).set({
+                              //     'id': id,
+                              //     'name': fullname,
+                              //   }).then((value) {
+                              //     setState(() {
+                              //       isLoading = false;
+                              //     });
+                              //   }).onError((error, v) {
+                              //     ToastPopUp().toast(error.toString(),
+                              //         Colors.red, Colors.white);
                               //   });
-                              // }).onError((error, v) {
+                              // } else {
                               //   ToastPopUp().toast(
-                              //       error.toString(), Colors.red, Colors.white);
-                              // });
+                              //       'First Name or Last Name is empty!',
+                              //       Colors.red,
+                              //       Colors.white);
+                              // }
 
                               // String userId =
                               //     FirebaseAuth.instance.currentUser!.uid;
@@ -229,7 +250,7 @@ class _SignupState extends State<Signup> {
                         }
                       });
                     }),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [

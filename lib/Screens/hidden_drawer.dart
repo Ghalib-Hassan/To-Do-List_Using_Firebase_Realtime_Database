@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import 'package:to_do_list_smit/Screens/all_tasks.dart';
-import 'package:to_do_list_smit/Screens/assigned_to_me.dart';
-import 'package:to_do_list_smit/Screens/important.dart';
-import 'package:to_do_list_smit/Screens/planned.dart';
 import 'package:to_do_list_smit/Screens/settings.dart';
 import 'package:to_do_list_smit/Screens/todo_list.dart';
 
@@ -32,14 +29,14 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
                   fontWeight: FontWeight.bold),
               selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
           const TodoList()),
-      // ScreenHiddenDrawer(
-      //   ItemHiddenMenu(
-      //       name: 'All Tasks',
-      //       baseStyle: GoogleFonts.eagleLake(
-      //           fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
-      //       selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
-      //   const AllTasks(),
-      // ),
+      ScreenHiddenDrawer(
+        ItemHiddenMenu(
+            name: 'Tasks',
+            baseStyle: GoogleFonts.eagleLake(
+                fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
+            selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
+        const AllTasks(),
+      ),
       // ScreenHiddenDrawer(
       //     ItemHiddenMenu(
       //         colorLineSelected: Colors.black,

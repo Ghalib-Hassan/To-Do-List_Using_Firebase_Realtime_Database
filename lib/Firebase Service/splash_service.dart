@@ -15,7 +15,7 @@ class SplashService {
       if (user != null) {
         pushReplace(context, const HiddenDrawer());
       } else {
-        pushReplace(context, Login());
+        pushReplace(context, const Login());
       }
     });
   }

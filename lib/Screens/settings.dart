@@ -16,6 +16,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +29,7 @@ class _SettingsState extends State<Settings> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.green),
-                child: Icon(
+                child: const Icon(
                   Icons.logout,
                   color: Colors.white,
                 )),
@@ -38,7 +39,7 @@ class _SettingsState extends State<Settings> {
                   fontSize: 20, color: appcolor, fontWeight: FontWeight.bold),
             ),
             trailing: IconButton(
-              icon: Icon(Icons.keyboard_arrow_right_outlined),
+              icon: const Icon(Icons.keyboard_arrow_right_outlined),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -60,11 +61,11 @@ class _SettingsState extends State<Settings> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text('Cancel')),
+                              child: const Text('Cancel')),
                           TextButton(
                               onPressed: () {
                                 auth.signOut().then((value) {
-                                  pushReplace(context, Login());
+                                  pushReplace(context, const Login());
                                   ToastPopUp().toast('Logout successfully',
                                       Colors.green, Colors.white);
                                 }).onError((error, v) {
@@ -73,7 +74,7 @@ class _SettingsState extends State<Settings> {
                                 });
                                 Navigator.pop(context);
                               },
-                              child: Text('Ok'))
+                              child: const Text('Ok'))
                         ],
                       );
                     });
@@ -87,7 +88,7 @@ class _SettingsState extends State<Settings> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.green),
-                child: Icon(
+                child: const Icon(
                   Icons.delete,
                   color: Colors.white,
                 )),
@@ -96,51 +97,55 @@ class _SettingsState extends State<Settings> {
               style: GoogleFonts.poppins(
                   fontSize: 20, color: appcolor, fontWeight: FontWeight.bold),
             ),
-            trailing: IconButton(
-              icon: Icon(Icons.keyboard_arrow_right_outlined),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text(
-                          'Delete Account',
-                          style: GoogleFonts.poppins(
-                              color: Colors.blueAccent,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        content: Text(
-                          'Are you sure you want to Delete account?',
-                          style: GoogleFonts.poppins(fontSize: 16),
-                        ),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text('Cancel')),
-                          TextButton(
-                              onPressed: () {
-                                auth.currentUser!.delete().then((value) {
-                                  pushReplace(context, Signup());
-                                  ToastPopUp().toast(
-                                      'Account deleted successfully',
-                                      Colors.green,
-                                      Colors.white);
-                                }).onError((error, v) {
-                                  ToastPopUp().toast(error.toString(),
-                                      Colors.green, Colors.white);
-                                });
-                                Navigator.pop(context);
-                              },
-                              child: Text('Ok'))
-                        ],
-                      );
-                    });
-              },
+            trailing: SizedBox(
+              width: 40,
+              height: 40,
+              child: IconButton(
+                icon: const Icon(Icons.keyboard_arrow_right_outlined),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            'Delete Account',
+                            style: GoogleFonts.poppins(
+                                color: Colors.blueAccent,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          content: Text(
+                            'Are you sure you want to Delete account?',
+                            style: GoogleFonts.poppins(fontSize: 16),
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel')),
+                            TextButton(
+                                onPressed: () {
+                                  auth.currentUser!.delete().then((v) {
+                                    ToastPopUp().toast(
+                                        'Account deleted successfully',
+                                        Colors.red,
+                                        Colors.white);
+                                    pushReplace(context, const Signup());
+                                  }).onError((error, v) {
+                                    print(error);
+                                    ToastPopUp().toast(error.toString(),
+                                        Colors.red, Colors.white);
+                                  });
+                                },
+                                child: const Text('Ok'))
+                          ],
+                        );
+                      });
+                },
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

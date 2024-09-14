@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Text(
                   'Welcome Back!',
                   style: GoogleFonts.poppins(
@@ -50,8 +50,8 @@ class _LoginState extends State<Login> {
                       fontWeight: FontWeight.w400,
                       fontSize: 15),
                 ),
-                SizedBox(height: 20),
-                SizedBox(height: 15),
+                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 SimpleAuthTextField(
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                   keyboardType: TextInputType.emailAddress,
                   labelText: 'Email',
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 PasswordTextField(
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -75,7 +75,7 @@ class _LoginState extends State<Login> {
                   keyboardType: TextInputType.visiblePassword,
                   labelText: 'Password',
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.only(right: 100, bottom: 30),
                   child: GestureDetector(
@@ -109,7 +109,7 @@ class _LoginState extends State<Login> {
                         });
                         ToastPopUp().toast(
                             'Login Successfull', Colors.green, Colors.white);
-                        pushReplace(context, HiddenDrawer());
+                        pushReplace(context, const HiddenDrawer());
                       }).onError((error, v) {
                         setState(() {
                           isLoading = false;
@@ -131,7 +131,7 @@ class _LoginState extends State<Login> {
                     }
                   },
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -150,7 +150,7 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Center(
                   child: Text(
                     'Or Sign In with ',
@@ -158,7 +158,7 @@ class _LoginState extends State<Login> {
                         color: darkblue, fontWeight: FontWeight.normal),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
