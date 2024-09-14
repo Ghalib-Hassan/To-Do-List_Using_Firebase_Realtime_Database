@@ -71,44 +71,162 @@ class _ImportantScreenState extends State<ImportantScreen> {
                         ? Colors.amber.withOpacity(.5)
                         : Colors.blueGrey.withOpacity(.5),
                     secondary: IconButton(
-                      icon: const Icon(Icons.edit, color: Colors.blue),
+                      icon: const Icon(Icons.more_vert_outlined,
+                          color: Colors.black),
                       onPressed: () {
-                        TextEditingController controller =
-                            TextEditingController(text: importantList[index]);
-                        showDialog<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Update your response',
-                                  style: GoogleFonts.mateSc()),
-                              content: TextField(
-                                controller: controller,
-                                style: GoogleFonts.ubuntu(fontSize: 20),
-                                decoration: InputDecoration(
-                                    labelText: 'Update your task',
-                                    labelStyle: GoogleFonts.ubuntu()),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('Cancel'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
+                        PopupMenuButton<String>(
+                          onSelected: (String value) {
+                            if (value == 'Edit') {
+                              Future.delayed(Duration.zero, () {
+                                TextEditingController controller =
+                                    TextEditingController(
+                                  text: importantList[index],
+                                );
+                                showDialog<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        'Update your response',
+                                        style: GoogleFonts.mateSc(),
+                                      ),
+                                      content: TextField(
+                                        controller: controller,
+                                        style: GoogleFonts.ubuntu(fontSize: 20),
+                                        decoration: InputDecoration(
+                                          labelText: 'Update your task',
+                                          labelStyle: GoogleFonts.ubuntu(),
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text('Save'),
+                                          onPressed: () {
+                                            setState(() {
+                                              importantList[index] =
+                                                  controller.text;
+                                              _saveData();
+                                            });
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
                                   },
-                                ),
-                                TextButton(
-                                  child: const Text('Save'),
-                                  onPressed: () {
-                                    setState(() {
-                                      importantList[index] = controller.text;
-                                      _saveData();
-                                    });
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
+                                );
+                              });
+                            } else if (value == 'Delete') {
+                              setState(() {
+                                for (int i = checkedList.length - 1;
+                                    i >= 0;
+                                    i--) {
+                                  if (checkedList[i]) {
+                                    importantList.removeAt(i);
+                                  }
+                                }
+                                _saveData();
+                              });
+                            }
                           },
+                          itemBuilder: (BuildContext context) {
+                            return <PopupMenuEntry<String>>[
+                              PopupMenuItem<String>(
+                                value: 'Edit',
+                                child: Text('Edit'),
+                              ),
+                              PopupMenuItem<String>(
+                                value: 'Delete',
+                                child: Text('Delete'),
+                              ),
+                            ];
+                          },
+                          offset: const Offset(0, -170),
                         );
+
+                        // showDialog(
+                        //     context: context,
+                        //     builder: (BuildContext context) {
+                        //       return AlertDialog(
+                        //         actions: [
+                        //           TextButton(
+                        //               onPressed: () {
+                        // TextEditingController controller =
+                        //     TextEditingController(
+                        //         text: importantList[index]);
+                        // showDialog<void>(
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return AlertDialog(
+                        //       title: Text(
+                        //           'Update your response',
+                        //           style: GoogleFonts.mateSc()),
+                        //       content: TextField(
+                        //         controller: controller,
+                        //         style: GoogleFonts.ubuntu(
+                        //             fontSize: 20),
+                        //         decoration: InputDecoration(
+                        //             labelText:
+                        //                 'Update your task',
+                        //             labelStyle:
+                        //                 GoogleFonts.ubuntu()),
+                        //       ),
+                        //       actions: <Widget>[
+                        //         TextButton(
+                        //           child: const Text('Cancel'),
+                        //           onPressed: () {
+                        //             Navigator.of(context).pop();
+                        //           },
+                        //         ),
+                        //         TextButton(
+                        //           child: const Text('Save'),
+                        //           onPressed: () {
+                        //             setState(() {
+                        //               importantList[index] =
+                        //                   controller.text;
+                        //               _saveData();
+                        //             });
+                        //             Navigator.of(context).pop();
+                        //           },
+                        //         ),
+                        //       ],
+                        //     );
+                        //   },
+                        // );
+                        //     },
+                        //     child: Text(
+                        //       'Edit',
+                        //       style: GoogleFonts.poppins(
+                        //           fontSize: 18,
+                        //           fontWeight: FontWeight.bold),
+                        //     )),
+                        // TextButton(
+                        //     onPressed: () {
+                        // setState(() {
+                        //   for (int i = checkedList.length - 1;
+                        //       i >= 0;
+                        //       i--) {
+                        //     if (checkedList[i]) {
+                        //       importantList.removeAt(i);
+                        //     }
+                        //   }
+                        //   _saveData();
+                        // });
+                        //           },
+                        //           child: Text(
+                        //             'Delete',
+                        //             style: GoogleFonts.poppins(
+                        //                 fontSize: 18,
+                        //                 fontWeight: FontWeight.bold),
+                        //           ))
+                        //     ],
+                        //   );
+                        // });
                       },
                     ),
                   ),
@@ -146,31 +264,31 @@ class _ImportantScreenState extends State<ImportantScreen> {
               ),
             ),
           ),
-          if (checkedList.contains(true))
-            Positioned(
-              bottom: 16.0,
-              right: 16.0,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: Colors.red),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: IconButton(
-                  tooltip: 'Delete',
-                  icon: const Icon(Icons.delete, size: 50, color: Colors.red),
-                  onPressed: () {
-                    setState(() {
-                      for (int i = checkedList.length - 1; i >= 0; i--) {
-                        if (checkedList[i]) {
-                          importantList.removeAt(i);
-                        }
-                      }
-                      _saveData();
-                    });
-                  },
-                ),
-              ),
-            ),
+          // if (checkedList.contains(true))
+          //   Positioned(
+          //     bottom: 16.0,
+          //     right: 16.0,
+          //     child: Container(
+          //       decoration: BoxDecoration(
+          //         border: Border.all(width: 2, color: Colors.red),
+          //         borderRadius: BorderRadius.circular(50),
+          //       ),
+          //       child: IconButton(
+          //         tooltip: 'Delete',
+          //         icon: const Icon(Icons.delete, size: 50, color: Colors.red),
+          //         onPressed: () {
+          // setState(() {
+          //   for (int i = checkedList.length - 1; i >= 0; i--) {
+          //     if (checkedList[i]) {
+          //       importantList.removeAt(i);
+          //     }
+          //   }
+          //   _saveData();
+          // });
+          //         },
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
     );

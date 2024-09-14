@@ -5,6 +5,7 @@ import 'package:to_do_list_smit/Screens/all_tasks.dart';
 import 'package:to_do_list_smit/Screens/assigned_to_me.dart';
 import 'package:to_do_list_smit/Screens/important.dart';
 import 'package:to_do_list_smit/Screens/planned.dart';
+import 'package:to_do_list_smit/Screens/settings.dart';
 import 'package:to_do_list_smit/Screens/todo_list.dart';
 
 class HiddenDrawer extends StatefulWidget {
@@ -25,45 +26,53 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
           ItemHiddenMenu(
               colorLineSelected: Colors.black,
               name: 'Home',
-              baseStyle: GoogleFonts.eagleLake(
+              baseStyle: GoogleFonts.fahkwang(
                   fontSize: 30,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
               selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
           const TodoList()),
+      // ScreenHiddenDrawer(
+      //   ItemHiddenMenu(
+      //       name: 'All Tasks',
+      //       baseStyle: GoogleFonts.eagleLake(
+      //           fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
+      //       selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
+      //   const AllTasks(),
+      // ),
+      // ScreenHiddenDrawer(
+      //     ItemHiddenMenu(
+      //         colorLineSelected: Colors.black,
+      //         name: 'Important',
+      //         baseStyle: GoogleFonts.eagleLake(
+      //             fontSize: 30,
+      //             color: Colors.white,
+      //             fontWeight: FontWeight.bold),
+      //         selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
+      //     const ImportantScreen()),
+      // ScreenHiddenDrawer(
+      //   ItemHiddenMenu(
+      //       name: 'Planned',
+      //       baseStyle: GoogleFonts.eagleLake(
+      //           fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
+      //       selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
+      //   const PlannedScreen(),
+      // ),
+      // ScreenHiddenDrawer(
+      //   ItemHiddenMenu(
+      //       name: 'Assigned',
+      //       baseStyle: GoogleFonts.eagleLake(
+      //           fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
+      //       selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
+      //   const AssignedToMeScreen(),
+      // ),
       ScreenHiddenDrawer(
         ItemHiddenMenu(
-            name: 'All Tasks',
-            baseStyle: GoogleFonts.eagleLake(
+            name: 'Settings',
+            baseStyle: GoogleFonts.fahkwang(
                 fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
             selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
-        const AllTasks(),
-      ),
-      ScreenHiddenDrawer(
-          ItemHiddenMenu(
-              colorLineSelected: Colors.black,
-              name: 'Important',
-              baseStyle: GoogleFonts.eagleLake(
-                  fontSize: 30,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-              selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
-          const ImportantScreen()),
-      ScreenHiddenDrawer(
-        ItemHiddenMenu(
-            name: 'Planned',
-            baseStyle: GoogleFonts.eagleLake(
-                fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
-            selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
-        const PlannedScreen(),
-      ),
-      ScreenHiddenDrawer(
-        ItemHiddenMenu(
-            name: 'Assigned',
-            baseStyle: GoogleFonts.eagleLake(
-                fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
-            selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
-        const AssignedToMeScreen(),
+        const Settings(),
       ),
     ];
   }

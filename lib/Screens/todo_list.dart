@@ -1,7 +1,11 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:to_do_list_smit/Custom%20Widgets/button.dart';
+import 'package:to_do_list_smit/Custom%20Widgets/toast.dart';
+import 'package:to_do_list_smit/Utils/colors.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({super.key});
@@ -13,6 +17,7 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   TextEditingController addController = TextEditingController();
   String textfield = '';
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,7 @@ class _TodoListState extends State<TodoList> {
                         Transform(
                           transform: Matrix4.rotationZ(0.2),
                           child: Image.network(
+                              semanticLabel: 'Todo Image',
                               height: 100,
                               'https://cdn.pixabay.com/photo/2022/05/22/17/22/to-do-7214069_1280.png'),
                         ),
@@ -65,7 +71,7 @@ class _TodoListState extends State<TodoList> {
                         ),
                         Center(
                           child: GlassText(
-                            'Get things done with My Day, a \nlist that refresher every day',
+                            'Get things done with My Day, a \nlist that refreshes every day',
                             style: GoogleFonts.mateSc(
                                 color: Colors.black,
                                 fontSize: 20,
@@ -80,93 +86,146 @@ class _TodoListState extends State<TodoList> {
               const SizedBox(
                 height: 230,
               ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: TextField(
-                  style: GoogleFonts.roboto(fontSize: 20),
-                  controller: addController,
-                  decoration: InputDecoration(
-                    suffixIcon: PopupMenuButton<String>(
-                      icon: const Icon(Icons.add),
-                      onSelected: (String value) async {
-                        String enteredText = addController.text;
-                        if (enteredText.isNotEmpty) {
-                          SharedPreferences sp =
-                              await SharedPreferences.getInstance();
-
-                          switch (value) {
-                            case 'Important':
-                              List<String>? importantList =
-                                  sp.getStringList('important') ?? [];
-                              importantList.add(enteredText);
-                              await sp.setStringList(
-                                  'important', importantList);
-                              break;
-                            case 'Planned':
-                              List<String>? plannedList =
-                                  sp.getStringList('planned') ?? [];
-                              plannedList.add(enteredText);
-                              await sp.setStringList('planned', plannedList);
-                              break;
-                            case 'Assigned-to-me':
-                              List<String>? assignedList =
-                                  sp.getStringList('assigned') ?? [];
-                              assignedList.add(enteredText);
-                              await sp.setStringList('assigned', assignedList);
-                              break;
-                          }
-
-                          List<String>? existingList =
-                              sp.getStringList(value) ?? [];
-
-                          existingList.add(enteredText);
-
-                          await sp.setStringList(value, existingList);
-
-                          addController.clear();
-                        }
-
-                        print("Text saved to $value location");
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return const <PopupMenuEntry<String>>[
-                          PopupMenuItem<String>(
-                            value: 'Important',
-                            child: Text('Important'),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        style: GoogleFonts.roboto(fontSize: 20),
+                        controller: addController,
+                        decoration: InputDecoration(
+                          hintText:
+                              "Try typing 'Pay utilities bill by Friday 6pm'",
+                          hintStyle: GoogleFonts.roboto(fontSize: 15),
+                          fillColor: Colors.white,
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
                           ),
-                          PopupMenuItem<String>(
-                            value: 'Planned',
-                            child: Text('Planned'),
-                          ),
-                          PopupMenuItem<String>(
-                            value: 'Assigned-to-me',
-                            child: Text('Assigned to me'),
-                          ),
-                        ];
-                      },
-                      offset: const Offset(0, -170),
-                    ),
-
-                    //  IconButton(
-                    //   onPressed: () async {
-                    //     // whereToAdd(context);
-                    //     SharedPreferences sp =
-                    //         await SharedPreferences.getInstance();
-                    //     sp.setString('Add task', addController.text);
-                    //   },
-                    //   icon: Icon(Icons.add),
-                    // ),
-                    hintText: "Try typing 'Pay utilities bill by Friday 6pm'",
-                    hintStyle: GoogleFonts.roboto(fontSize: 15),
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: CustomButton(
+                      buttonText: '+',
+                      buttonWidth: 50,
+                      buttonHeight: 55,
+                      buttonColor: lightGrey,
+                      buttonFontSize: 40,
+                      buttonFontWeight: FontWeight.bold,
+                      buttonRadius: 10,
+                      textColor: white,
+                      isLoading: isLoading,
+                      onPressed: () {
+                        DatabaseReference db =
+                            FirebaseDatabase.instance.ref('Todo');
+                        String id =
+                            DateTime.now().millisecondsSinceEpoch.toString();
+
+                        db.child(id).set({
+                          'id': id,
+                          'name': 'Ghalib hassan',
+                          'Todo': addController.text.toString().trim()
+                        }).then((value) {
+                          addController.clear();
+                          setState(() {
+                            isLoading = false;
+                          });
+                          ToastPopUp()
+                              .toast('Data saved', Colors.green, Colors.white);
+                        }).onError((error, v) {
+                          ToastPopUp()
+                              .toast('Failed to add', Colors.red, Colors.white);
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
+              // Padding(
+              //   padding: const EdgeInsets.all(20.0),
+              //   child: TextField(
+              //     style: GoogleFonts.roboto(fontSize: 20),
+              //     controller: addController,
+              //     decoration: InputDecoration(
+              //       suffixIcon: PopupMenuButton<String>(
+              //         icon: const Icon(Icons.add),
+              //         onSelected: (String value) async {
+              //           String enteredText = addController.text;
+              //           if (enteredText.isNotEmpty) {
+              //             SharedPreferences sp =
+              //                 await SharedPreferences.getInstance();
+
+              //             switch (value) {
+              //               case 'Important':
+              //                 List<String>? importantList =
+              //                     sp.getStringList('important') ?? [];
+              //                 importantList.add(enteredText);
+              //                 await sp.setStringList(
+              //                     'important', importantList);
+              //                 break;
+              //               case 'Planned':
+              //                 List<String>? plannedList =
+              //                     sp.getStringList('planned') ?? [];
+              //                 plannedList.add(enteredText);
+              //                 await sp.setStringList('planned', plannedList);
+              //                 break;
+              //               case 'Assigned-to-me':
+              //                 List<String>? assignedList =
+              //                     sp.getStringList('assigned') ?? [];
+              //                 assignedList.add(enteredText);
+              //                 await sp.setStringList('assigned', assignedList);
+              //                 break;
+              //             }
+
+              //             List<String>? existingList =
+              //                 sp.getStringList(value) ?? [];
+
+              //             existingList.add(enteredText);
+
+              //             await sp.setStringList(value, existingList);
+
+              //             addController.clear();
+              //           }
+
+              //           print("Text saved to $value location");
+              //         },
+              //         itemBuilder: (BuildContext context) {
+              //           return const <PopupMenuEntry<String>>[
+              //             PopupMenuItem<String>(
+              //               value: 'Important',
+              //               child: Text('Important'),
+              //             ),
+              //             PopupMenuItem<String>(
+              //               value: 'Planned',
+              //               child: Text('Planned'),
+              //             ),
+              //             PopupMenuItem<String>(
+              //               value: 'Assigned-to-me',
+              //               child: Text('Assigned to me'),
+              //             ),
+              //           ];
+              //         },
+              //         offset: const Offset(0, -170),
+              //       ),
+              //       hintText: "Try typing 'Pay utilities bill by Friday 6pm'",
+              //       hintStyle: GoogleFonts.roboto(fontSize: 15),
+              //       fillColor: Colors.white,
+              //       filled: true,
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(10),
+              //         borderSide: BorderSide.none,
+              //       ),
+              //     ),
+              //   ),
+              // )
               // ElevatedButton(onPressed: () {}, child: Text('Add Task'))
             ],
           ),
