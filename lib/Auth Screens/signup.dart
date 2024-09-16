@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do_list_smit/Auth%20Screens/login.dart';
@@ -174,49 +173,6 @@ class _SignupState extends State<Signup> {
                                 isLoading = false;
                               });
 
-                              // firstname = firstName.text.trim();
-                              // lastname = lastName.text.trim();
-                              // fullname = '$firstname $lastname';
-
-                              // if (firstname.isNotEmpty && lastname.isNotEmpty) {
-                              //   DatabaseReference db =
-                              //       FirebaseDatabase.instance.ref('Todo');
-                              //   String id = DateTime.now()
-                              //       .millisecondsSinceEpoch
-                              //       .toString();
-
-                              //   db.child(id).set({
-                              //     'id': id,
-                              //     'name': fullname,
-                              //   }).then((value) {
-                              //     setState(() {
-                              //       isLoading = false;
-                              //     });
-                              //   }).onError((error, v) {
-                              //     ToastPopUp().toast(error.toString(),
-                              //         Colors.red, Colors.white);
-                              //   });
-                              // } else {
-                              //   ToastPopUp().toast(
-                              //       'First Name or Last Name is empty!',
-                              //       Colors.red,
-                              //       Colors.white);
-                              // }
-
-                              // String userId =
-                              //     FirebaseAuth.instance.currentUser!.uid;
-
-                              // DatabaseReference db = FirebaseDatabase.instance
-                              //     .ref('Users')
-                              //     .child(userId);
-
-                              // db.set({
-                              //   'firstName': firstName,
-                              //   'lastName': lastName,
-                              // }).onError((error, v) {
-                              //   ToastPopUp().toast('Enter first and last name',
-                              //       Colors.red, Colors.white);
-                              // });
                               ToastPopUp().toast(
                                   "Account created successfully!",
                                   Colors.green,

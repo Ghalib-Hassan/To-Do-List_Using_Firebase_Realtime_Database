@@ -32,6 +32,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textCapitalization: TextCapitalization.sentences,
       keyboardType: widget.keyboardType,
       validator: widget.validator,
       style: const TextStyle(color: Colors.black),

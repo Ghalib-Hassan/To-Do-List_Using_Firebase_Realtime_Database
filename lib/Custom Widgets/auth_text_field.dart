@@ -28,6 +28,7 @@ class _SimpleAuthTextFieldState extends State<SimpleAuthTextField> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: TextFormField(
+        textCapitalization: TextCapitalization.sentences,
         keyboardType: widget.keyboardType,
         validator: widget.validator,
         style: const TextStyle(color: Colors.black),

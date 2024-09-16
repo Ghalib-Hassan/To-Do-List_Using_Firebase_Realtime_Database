@@ -25,16 +25,24 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Transform(
+              transform: Matrix4.rotationZ(0.2),
+              child: Image.asset(
+                  semanticLabel: 'Todo Image', height: 100, 'Images/To-do.jpg'),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             RichText(
                 text: TextSpan(
                     style:
                         GoogleFonts.roboto(color: Colors.white, fontSize: 23),
                     children: [
                   const TextSpan(
-                      text: 'Your To Do ',
+                      text: 'Welcome to your Own\n',
                       style: TextStyle(fontWeight: FontWeight.w500)),
                   TextSpan(
-                      text: 'List',
+                      text: 'ToDo List',
                       style: GoogleFonts.poppins(
                           fontSize: 30, fontWeight: FontWeight.bold))
                 ]))

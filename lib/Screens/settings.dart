@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do_list_smit/Auth%20Screens/login.dart';
@@ -15,6 +16,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  DatabaseReference db = FirebaseDatabase.instance.ref('TodoList');
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
@@ -133,7 +135,6 @@ class _SettingsState extends State<Settings> {
                                         Colors.white);
                                     pushReplace(context, const Signup());
                                   }).onError((error, v) {
-                                    print(error);
                                     ToastPopUp().toast(error.toString(),
                                         Colors.red, Colors.white);
                                   });

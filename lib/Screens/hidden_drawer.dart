@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
 import 'package:to_do_list_smit/Screens/all_tasks.dart';
+import 'package:to_do_list_smit/Screens/checked.dart';
 import 'package:to_do_list_smit/Screens/settings.dart';
 import 'package:to_do_list_smit/Screens/todo_list.dart';
 
@@ -31,38 +32,20 @@ class _HiddenDrawerState extends State<HiddenDrawer> {
           const TodoList()),
       ScreenHiddenDrawer(
         ItemHiddenMenu(
-            name: 'Tasks',
-            baseStyle: GoogleFonts.eagleLake(
-                fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
-            selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
+            name: 'All Tasks',
+            baseStyle: GoogleFonts.fahkwang(
+                fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
+            selectedStyle: GoogleFonts.fahkwang(fontSize: 40)),
         const AllTasks(),
       ),
-      // ScreenHiddenDrawer(
-      //     ItemHiddenMenu(
-      //         colorLineSelected: Colors.black,
-      //         name: 'Important',
-      //         baseStyle: GoogleFonts.eagleLake(
-      //             fontSize: 30,
-      //             color: Colors.white,
-      //             fontWeight: FontWeight.bold),
-      //         selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
-      //     const ImportantScreen()),
-      // ScreenHiddenDrawer(
-      //   ItemHiddenMenu(
-      //       name: 'Planned',
-      //       baseStyle: GoogleFonts.eagleLake(
-      //           fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
-      //       selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
-      //   const PlannedScreen(),
-      // ),
-      // ScreenHiddenDrawer(
-      //   ItemHiddenMenu(
-      //       name: 'Assigned',
-      //       baseStyle: GoogleFonts.eagleLake(
-      //           fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
-      //       selectedStyle: GoogleFonts.fahkwang(fontSize: 50)),
-      //   const AssignedToMeScreen(),
-      // ),
+      ScreenHiddenDrawer(
+        ItemHiddenMenu(
+            name: 'Checked Tasks',
+            baseStyle: GoogleFonts.fahkwang(
+                fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
+            selectedStyle: GoogleFonts.fahkwang(fontSize: 40)),
+        CheckedScreen(),
+      ),
       ScreenHiddenDrawer(
         ItemHiddenMenu(
             name: 'Settings',
