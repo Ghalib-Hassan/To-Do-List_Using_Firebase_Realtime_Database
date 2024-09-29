@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do_list_smit/Auth%20Screens/login.dart';
@@ -24,6 +25,7 @@ class _SignupState extends State<Signup> {
   TextEditingController lastName = TextEditingController();
   String fullname = '', firstname = '', lastname = '';
   FirebaseAuth auth = FirebaseAuth.instance;
+  DatabaseReference db = FirebaseDatabase.instance.ref('Users');
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
@@ -171,6 +173,13 @@ class _SignupState extends State<Signup> {
                                 .then((value) async {
                               setState(() {
                                 isLoading = false;
+                              });
+                              String fullname =
+                                  '${firstName.text.toString()} ${lastName.text.toString()}';
+                              db.child(value.user!.uid).set({
+                                'email': emailController.text.toString().trim(),
+                                'name': fullname,
+                                'uid': value.user!.uid
                               });
 
                               ToastPopUp().toast(

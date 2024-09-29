@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
@@ -18,6 +19,17 @@ class _TodoListState extends State<TodoList> {
   TextEditingController descriptionController = TextEditingController();
   DatabaseReference db = FirebaseDatabase.instance.ref('TodoList');
   bool isLoading = false;
+  late Query queryDatabase;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    queryDatabase = FirebaseDatabase.instance
+        .ref('TodoList')
+        .orderByChild('uid')
+        .equalTo(auth.currentUser!.uid);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +165,7 @@ class _TodoListState extends State<TodoList> {
 
                     db.child(id).set({
                       'id': id,
-                      'name': 'Ghalib hassan',
+                      'uid': auth.currentUser!.uid,
                       'Title': titleController.text.toString().trim(),
                       'Description':
                           descriptionController.text.toString().trim(),
